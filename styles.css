@@ -1,0 +1,136 @@
+/* styles.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffe1ec; /* Lighter pink background */
+  color: #4d2d39;
+}
+
+h1, h2 {
+  color: #7b2d7d; /* Purple for headings */
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.25rem;
+  margin-bottom: 2rem;
+}
+
+button {
+  background-color: #e75480; /* Deeper pink button */
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background-color: #f4779a; /* Hover lighter pink */
+  transform: scale(1.03);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #ffc2da;
+  border-radius: 6px;
+  background-color: #fff0f5; /* Soft pink input fields */
+  color: #4d2d39;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #e75480;
+  outline: none;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #999;
+}
+
+form, .form-section, .search-box, .result-box {
+  background-color: #fff0f5; /* Full pink background on forms */
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin-top: 1.5rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.max-container {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 1.5rem;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-green {
+  color: #4ade80;
+}
+
+.text-red {
+  color: #f87171;
+}
+
+.result-box {
+  margin-top: 2rem;
+}
+
+.result-box p {
+  margin: 0.25rem 0;
+}
+
+.search-box {
+  margin: 0 auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.shadow {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.bg-white {
+  background-color: #fff0f5;
+}
+
+.text-green-600 {
+  color: #4ade80;
+}
+
+.text-red-600 {
+  color: #f87171;
+}
+
+.text-center {
+  text-align: center;
+}

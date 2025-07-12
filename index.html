@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dental Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/framer-motion@10.12.16/dist/framer-motion.umd.js"></script>
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Dr.Teja's Multi Speciality Dental Clinic</h1>
+
+    <div class="flex-center">
+      <button id="showAddForm">Add Patient</button>
+      <button id="showSearchForm">Get Patient</button>
+    </div>
+
+    <div id="formContainer"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA3GfQ8K_hlNSpF0aCNCtCzkC7xocQa1p0",
+      authDomain: "dentaldashboard-b7244.firebaseapp.com",
+      projectId: "dentaldashboard-b7244",
+      storageBucket: "dentaldashboard-b7244.firebasestorage.app",
+      messagingSenderId: "956356553912",
+      appId: "1:956356553912:web:018564f0830df62616584d",
+      measurementId: "G-K1GMXED31S"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const formContainer = document.getElementById("formContainer");
+    document.getElementById("showAddForm").addEventListener("click", showAddPatientForm);
+    document.getElementById("showSearchForm").addEventListener("click", showSearchPatientForm);
+
+    function showAddPatientForm() {
+      formContainer.innerHTML = `
+        <form id="patientForm" class="space-y-4 bg-white p-6 rounded shadow">
+          <h2 class="text-xl font-semibold mb-2">Enter Patient Details</h2>
+          <input id="patientId" placeholder="Patient ID" required />
+          <input id="name" placeholder="Name" required />
+          <input id="age" placeholder="Age" type="number" required />
+          <select id="gender" required>
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+          <input id="location" placeholder="Place/Location" />
+          <input id="date" placeholder="Date" />
+
+          <select id="medicalHistory" required>
+            <option value="">Medical History</option>
+            <option>Hypertension</option>
+            <option>Diabetes</option>
+            <option>Other</option>
+          </select>
+          <input id="medicalHistoryOther" class="hidden" placeholder="Enter other medical history" />
+
+          <select id="habits" required>
+            <option value="">Habits</option>
+            <option>Alcohol</option>
+            <option>Smoking</option>
+            <option>Tobacco Chewing</option>
+            <option>Other</option>
+          </select>
+          <input id="habitsOther" class="hidden" placeholder="Enter other habit" />
+
+          <input id="diagnosis" placeholder="Rx Diagnosis" />
+          <input id="advice" placeholder="Rx Advice" />
+          <input id="done" placeholder="Rx Done" />
+          <input id="recall" placeholder="Recall" />
+          <input id="medication" placeholder="Medication" />
+          <textarea id="notes" placeholder="Notes"></textarea>
+          <input id="consultant" placeholder="Consultant Doctor Name" />
+          <input id="fee" placeholder="Fee" type="number" />
+          <input id="due" placeholder="Due" type="number" />
+          <button type="submit">Save Patient</button>
+          <p id="formStatus" class="text-sm mt-2"></p>
+        </form>
+      `;
+
+      const medicalHistory = document.getElementById("medicalHistory");
+      const medicalHistoryOther = document.getElementById("medicalHistoryOther");
+      medicalHistory.addEventListener("change", () => {
+        medicalHistoryOther.classList.toggle("hidden", medicalHistory.value !== "Other");
+      });
+
+      const habits = document.getElementById("habits");
+      const habitsOther = document.getElementById("habitsOther");
+      habits.addEventListener("change", () => {
+        habitsOther.classList.toggle("hidden", habits.value !== "Other");
+      });
+
+      document.getElementById("patientForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formStatus = document.getElementById("formStatus");
+
+        const medHistoryVal = medicalHistory.value === "Other" ? medicalHistoryOther.value : medicalHistory.value;
+        const habitsVal = habits.value === "Other" ? habitsOther.value : habits.value;
+
+        const data = {
+          patientId: document.getElementById("patientId").value,
+          name: document.getElementById("name").value,
+          age: parseInt(document.getElementById("age").value),
+          gender: document.getElementById("gender").value,
+          location: document.getElementById("location").value,
+          date: document.getElementById("date").value,
+          medicalHistory: medHistoryVal,
+          habits: habitsVal,
+          caseHistory: {
+            diagnosis: document.getElementById("diagnosis").value,
+            advice: document.getElementById("advice").value,
+            done: document.getElementById("done").value,
+          },
+          recall: document.getElementById("recall").value,
+          medication: document.getElementById("medication").value,
+          notes: document.getElementById("notes").value,
+          consultant: document.getElementById("consultant").value,
+          fee: parseFloat(document.getElementById("fee").value),
+          due: parseFloat(document.getElementById("due").value),
+          createdAt: new Date()
+        };
+
+        try {
+          await setDoc(doc(db, "patients", data.patientId), data);
+          formStatus.textContent = "✅ Patient saved successfully!";
+          formStatus.className = "text-green-600";
+          e.target.reset();
+          medicalHistoryOther.classList.add("hidden");
+          habitsOther.classList.add("hidden");
+        } catch (err) {
+          console.error(err);
+          formStatus.textContent = "❌ Failed to save patient.";
+          formStatus.className = "text-red-600";
+        }
+      });
+    }
+
+    function showSearchPatientForm() {
+      formContainer.innerHTML = `
+        <div class="bg-white p-6 rounded shadow search-box">
+          <h2 class="text-xl font-semibold mb-4">Search Patient</h2>
+          <input id="searchInput" placeholder="Enter Patient ID or Name" />
+          <button id="searchBtn" class="w-full">Search</button>
+          <div id="searchResult" class="mt-4"></div>
+        </div>
+      `;
+
+      document.getElementById("searchBtn").addEventListener("click", async () => {
+        const value = document.getElementById("searchInput").value.trim();
+        const resultBox = document.getElementById("searchResult");
+        resultBox.innerHTML = `<p>Searching...</p>`;
+
+        let found = false;
+
+        try {
+          const docRef = doc(db, "patients", value);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            resultBox.innerHTML = formatPatientData(docSnap.data());
+            found = true;
+          } else {
+            const q = query(collection(db, "patients"), where("name", "==", value));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+              querySnapshot.forEach((doc) => {
+                resultBox.innerHTML = formatPatientData(doc.data());
+              });
+              found = true;
+            }
+          }
+
+          if (!found) {
+            resultBox.innerHTML = `<p class="text-red-600">❌ No patient found with given ID or Name.</p>`;
+          }
+        } catch (error) {
+          console.error(error);
+          resultBox.innerHTML = `<p class="text-red-600">❌ Error fetching patient data.</p>`;
+        }
+      });
+    }
+
+    function formatPatientData(data) {
+      return `
+        <div class="bg-white p-4 rounded shadow text-sm space-y-2 result-box">
+          <p><strong>Patient ID:</strong> ${data.patientId}</p>
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Age:</strong> ${data.age}</p>
+          <p><strong>Gender:</strong> ${data.gender}</p>
+          <p><strong>Location:</strong> ${data.location}</p>
+          <p><strong>Date:</strong> ${data.date}</p>
+          <p><strong>Medical History:</strong> ${data.medicalHistory}</p>
+          <p><strong>Habits:</strong> ${data.habits}</p>
+          <div class="border-t pt-2">
+            <p class="font-semibold">Case History:</p>
+            <p><strong>Diagnosis:</strong> ${data.caseHistory?.diagnosis}</p>
+            <p><strong>Advice:</strong> ${data.caseHistory?.advice}</p>
+            <p><strong>Done:</strong> ${data.caseHistory?.done}</p>
+          </div>
+          <p><strong>Recall:</strong> ${data.recall}</p>
+          <p><strong>Medication:</strong> ${data.medication}</p>
+          <p><strong>Notes:</strong> ${data.notes}</p>
+          <p><strong>Consultant:</strong> ${data.consultant}</p>
+          <p><strong>Fee:</strong> ₹${data.fee}</p>
+          <p><strong>Due:</strong> ₹${data.due}</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
