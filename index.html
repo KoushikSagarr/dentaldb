@@ -9,7 +9,7 @@
 </head>
 <body class="bg-gray-100 p-6 font-sans">
   <div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6 text-center">Dr.Teja's Multi Speciality Dental Clinic</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center">Dr.Teja's Multispecialty Dental Care</h1>
 
     <div class="flex-center">
       <button id="showAddForm">Add Patient</button>
@@ -82,6 +82,7 @@
           <input id="medication" placeholder="Medication" />
           <textarea id="notes" placeholder="Notes"></textarea>
           <input id="consultant" placeholder="Consultant Doctor Name" />
+          <input id="referral" placeholder="Referral (optional)" /> <!-- New Field -->
           <input id="fee" placeholder="Fee" type="number" />
           <input id="due" placeholder="Due" type="number" />
           <button type="submit">Save Patient</button>
@@ -126,6 +127,7 @@
           medication: document.getElementById("medication").value,
           notes: document.getElementById("notes").value,
           consultant: document.getElementById("consultant").value,
+          referral: document.getElementById("referral").value, // Added here
           fee: parseFloat(document.getElementById("fee").value),
           due: parseFloat(document.getElementById("due").value),
           createdAt: new Date()
@@ -213,6 +215,7 @@
           <p><strong>Medication:</strong> ${data.medication}</p>
           <p><strong>Notes:</strong> ${data.notes}</p>
           <p><strong>Consultant:</strong> ${data.consultant}</p>
+          <p><strong>Referral:</strong> ${data.referral}</p>
           <p><strong>Fee:</strong> ₹${data.fee}</p>
           <p><strong>Due:</strong> ₹${data.due}</p>
         </div>
