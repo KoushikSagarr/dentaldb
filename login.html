@@ -69,7 +69,7 @@
 <body>
   <div class="login-wrapper">
     <div class="login-box">
-      <h1>Dental Dashboard Login</h1>
+      <h1>Teja Multispecialty Dental Clinic Portal</h1>
       <form id="loginForm">
         <input type="email" id="email" placeholder="Email" required />
         <input type="password" id="password" placeholder="Password" required />
@@ -114,6 +114,12 @@
         loginError.style.display = "block";
       }
     });
+    onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
+
   </script>
 </body>
 </html>
