@@ -15,13 +15,12 @@
       <button id="showAddForm">Add Patient</button>
       <button id="showSearchForm">Get Patient</button>
     </div>
-
     <div id="formContainer"></div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import {
       getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -40,7 +39,6 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // ✅ Protect route: Redirect to login if user is not signed in
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "login.html";
@@ -230,6 +228,21 @@
         </div>
       `;
     }
+
+    // 🔒 Auto logout after 10 minutes of inactivity
+    let logoutTimer;
+    function resetLogoutTimer() {
+      clearTimeout(logoutTimer);
+      logoutTimer = setTimeout(() => {
+        signOut(auth).then(() => {
+          window.location.href = "login.html";
+        });
+      }, 10 * 60 * 1000); // 10 minutes
+    }
+    ["click", "mousemove", "keydown", "scroll", "touchstart"].forEach((event) => {
+      window.addEventListener(event, resetLogoutTimer);
+    });
+    resetLogoutTimer();
   </script>
 </body>
 </html>
