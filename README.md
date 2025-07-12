@@ -41,10 +41,6 @@ You can deploy this dashboard in minutes using [Vercel](https://vercel.com):
 4. Set framework = **None (Static Site)**.
 5. Deploy!
 
-You'll get a live URL like:
-
-https://dental-dashboard.vercel.app
-
 yaml
 Copy
 Edit
