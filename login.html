@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Dental Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen font-sans">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+    <h1 class="text-2xl font-bold text-purple-700 mb-6">Dental Dashboard Login</h1>
+    <form id="loginForm" class="space-y-4">
+      <input type="email" id="email" placeholder="Email" required class="w-full p-2 border rounded" />
+      <input type="password" id="password" placeholder="Password" required class="w-full p-2 border rounded" />
+      <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded w-full">
+        Login
+      </button>
+      <p id="loginError" class="text-red-600 mt-2 hidden"></p>
+    </form>
+  </div>
+
+  <!-- Firebase compat version -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA3GfQ8K_hlNSpF0aCNCtCzkC7xocQa1p0",
+      authDomain: "dentaldashboard-b7244.firebaseapp.com",
+      projectId: "dentaldashboard-b7244",
+      storageBucket: "dentaldashboard-b7244.firebasestorage.app",
+      messagingSenderId: "956356553912",
+      appId: "1:956356553912:web:018564f0830df62616584d",
+      measurementId: "G-K1GMXED31S"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginForm = document.getElementById("loginForm");
+    const loginError = document.getElementById("loginError");
+
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "index.html";
+        })
+        .catch((error) => {
+          loginError.textContent = "⚠️ " + error.message;
+          loginError.classList.remove("hidden");
+        });
+    });
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</body>
+</html>
