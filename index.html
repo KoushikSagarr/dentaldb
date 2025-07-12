@@ -256,32 +256,48 @@ function showEditPatientForm() {
       status.className = "text-red-600";
     }
   });
+
 }
-    function showDeletePatientForm() {
-      formContainer.innerHTML = `
-        <div class="bg-white p-6 rounded shadow">
-          <h2 class="text-xl font-semibold mb-4">Delete Patient</h2>
-          <input id="deleteId" placeholder="Enter Patient ID to Delete" />
-          <button id="deleteBtn">Delete</button>
-          <p id="deleteStatus" class="text-sm mt-2"></p>
-        </div>
-      `;
+function showDeletePatientForm() {
+  formContainer.innerHTML = `
+    <div class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Delete Patient</h2>
+      <input id="deletePatientId" placeholder="Enter Patient ID to Delete" />
+      <button id="deleteBtn">Delete</button>
+      <p id="deleteStatus" class="text-sm mt-2"></p>
+    </div>
+  `;
 
-      document.getElementById("deleteBtn").addEventListener("click", async () => {
-        const id = document.getElementById("deleteId").value.trim();
-        const status = document.getElementById("deleteStatus");
+  document.getElementById("deleteBtn").addEventListener("click", async () => {
+    const id = document.getElementById("deletePatientId").value.trim();
+    const status = document.getElementById("deleteStatus");
 
-        try {
-          await deleteDoc(doc(db, "patients", id));
-          status.textContent = "✅ Patient deleted successfully!";
-          status.className = "text-green-600";
-        } catch (err) {
-          status.textContent = "❌ Failed to delete: " + err.message;
-          status.className = "text-red-600";
-        }
-      });
+    if (!id) {
+      status.textContent = "❌ Please enter a valid Patient ID.";
+      status.className = "text-red-600";
+      return;
     }
 
+    try {
+      const docRef = doc(db, "patients", id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        status.textContent = "❌ No patient found with that ID.";
+        status.className = "text-red-600";
+        return;
+      }
+
+      await deleteDoc(docRef);
+      status.textContent = "✅ Patient deleted successfully.";
+      status.className = "text-green-600";
+    } catch (err) {
+      console.error(err);
+      status.textContent = "❌ Error deleting patient: " + err.message;
+      status.className = "text-red-600";
+    }
+  });
+}
     async function showAllPatients() {
       formContainer.innerHTML = `<div class="bg-white p-6 rounded shadow"><h2 class="text-xl font-semibold mb-4">All Patients (Sorted by Name)</h2><div id="allPatients"></div></div>`;
 
