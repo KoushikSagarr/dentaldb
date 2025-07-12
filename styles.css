@@ -3,12 +3,12 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffe1ec; /* Lighter pink background */
+  background-color: #f3e8ff; /* Lavender cream background */
   color: #4d2d39;
 }
 
 h1, h2 {
-  color: #7b2d7d; /* Purple for headings */
+  color: #6a0dad; /* Deep lavender for headings */
   text-align: center;
 }
 
@@ -18,7 +18,7 @@ h1 {
 }
 
 button {
-  background-color: #e75480; /* Deeper pink button */
+  background-color: #b57edc; /* Medium lavender */
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -30,7 +30,7 @@ button {
 }
 
 button:hover {
-  background-color: #f4779a; /* Hover lighter pink */
+  background-color: #c89ce4; /* Lighter lavender hover */
   transform: scale(1.03);
 }
 
@@ -39,15 +39,15 @@ input, select, textarea {
   padding: 0.6rem;
   margin-top: 0.4rem;
   margin-bottom: 1.2rem;
-  border: 1px solid #ffc2da;
+  border: 1px solid #d3bdf0;
   border-radius: 6px;
-  background-color: #fff0f5; /* Soft pink input fields */
+  background-color: #f9f5ff; /* Soft cream-lavender input fields */
   color: #4d2d39;
   transition: border-color 0.3s ease;
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: #e75480;
+  border-color: #b57edc;
   outline: none;
 }
 
@@ -56,7 +56,7 @@ input::placeholder, textarea::placeholder {
 }
 
 form, .form-section, .search-box, .result-box {
-  background-color: #fff0f5; /* Full pink background on forms */
+  background-color: #f9f5ff; /* Form background in lavender cream */
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -120,7 +120,7 @@ form, .form-section, .search-box, .result-box {
 }
 
 .bg-white {
-  background-color: #fff0f5;
+  background-color: #f9f5ff;
 }
 
 .text-green-600 {
