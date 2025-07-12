@@ -73,7 +73,7 @@ form, .form-section, .search-box, .result-box {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1.5rem;
   margin: 2rem auto;
   text-align: center;
 }
