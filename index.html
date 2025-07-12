@@ -202,39 +202,61 @@
       });
     }
 
-    function showEditPatientForm() {
-      formContainer.innerHTML = `
-        <div class="bg-white p-6 rounded shadow">
-          <h2 class="text-xl font-semibold mb-4">Edit Patient</h2>
-          <input id="editPatientId" placeholder="Enter Patient ID to Edit" />
-          <input id="editField" placeholder="Field to Edit (e.g. name, fee)" />
-          <input id="editValue" placeholder="New Value" />
-          <button id="editBtn">Update</button>
-          <p id="editStatus" class="text-sm mt-2"></p>
-        </div>
-      `;
+function showEditPatientForm() {
+  formContainer.innerHTML = `
+    <div class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Edit Patient</h2>
+      <p class="text-sm text-gray-600 mb-2">
+        Provide the Patient ID, field to edit (e.g. <code>name</code>, <code>fee</code>, <code>caseHistory.diagnosis</code>), and new value.
+      </p>
+      <input id="editPatientId" placeholder="Enter Patient ID to Edit" />
+      <input id="editField" placeholder="Field to Edit (e.g. name, fee, caseHistory.diagnosis)" />
+      <input id="editValue" placeholder="New Value" />
+      <button id="editBtn">Update</button>
+      <p id="editStatus" class="text-sm mt-2"></p>
+    </div>
+  `;
 
-      document.getElementById("editBtn").addEventListener("click", async () => {
-        const id = document.getElementById("editPatientId").value.trim();
-        const field = document.getElementById("editField").value.trim();
-        let value = document.getElementById("editValue").value.trim();
+  document.getElementById("editBtn").addEventListener("click", async () => {
+    const id = document.getElementById("editPatientId").value.trim();
+    const field = document.getElementById("editField").value.trim();
+    let value = document.getElementById("editValue").value.trim();
+    const status = document.getElementById("editStatus");
 
-        const status = document.getElementById("editStatus");
-        try {
-          const updateObj = {};
-          value = isNaN(value) ? value : parseFloat(value);
-          updateObj[field] = value;
-
-          await updateDoc(doc(db, "patients", id), updateObj);
-          status.textContent = "✅ Patient updated successfully!";
-          status.className = "text-green-600";
-        } catch (err) {
-          status.textContent = "❌ Failed to update: " + err.message;
-          status.className = "text-red-600";
-        }
-      });
+    if (!id || !field || value === "") {
+      status.textContent = "⚠️ All fields are required.";
+      status.className = "text-red-600";
+      return;
     }
 
+    try {
+      const docRef = doc(db, "patients", id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        status.textContent = "❌ Patient not found.";
+        status.className = "text-red-600";
+        return;
+      }
+
+      // Convert numeric fields properly
+      value = !isNaN(value) && field !== "name" && field !== "gender" && field !== "location"
+        ? parseFloat(value)
+        : value;
+
+      const updateObj = {};
+      updateObj[field] = value;
+
+      await updateDoc(docRef, updateObj);
+      status.textContent = "✅ Patient updated successfully!";
+      status.className = "text-green-600";
+    } catch (err) {
+      console.error(err);
+      status.textContent = "❌ Failed to update: " + err.message;
+      status.className = "text-red-600";
+    }
+  });
+}
     function showDeletePatientForm() {
       formContainer.innerHTML = `
         <div class="bg-white p-6 rounded shadow">
