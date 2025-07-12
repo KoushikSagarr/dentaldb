@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Dental Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+  <div class="max-w-md mx-auto mt-20 bg-white p-8 rounded shadow text-center">
+    <h1 class="text-2xl font-bold mb-6 text-center">Dr.Teja's Dental Login</h1>
+    <form id="loginForm" class="space-y-4">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <p id="loginStatus" class="text-sm mt-2 text-red-600"></p>
+    </form>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        const firebaseConfig = {
+      apiKey: "AIzaSyA3GfQ8K_hlNSpF0aCNCtCzkC7xocQa1p0",
+      authDomain: "dentaldashboard-b7244.firebaseapp.com",
+      projectId: "dentaldashboard-b7244",
+      storageBucket: "dentaldashboard-b7244.firebasestorage.app",
+      messagingSenderId: "956356553912",
+      appId: "1:956356553912:web:018564f0830df62616584d",
+      measurementId: "G-K1GMXED31S"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById("loginForm");
+    const status = document.getElementById("loginStatus");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "index.html";
+      } catch (error) {
+        status.textContent = "❌ Login failed: " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
