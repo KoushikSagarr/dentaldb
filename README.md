@@ -8,7 +8,7 @@ A professional, responsive web application to manage patient records for a denta
 
 ## ✨ Features
 
-- Add and retrieve patient records by **Patient ID or Name**
+- Add/retrieve/edit/delete/display patient records by **Patient ID or Name**
 - Fields include medical history, habits, case history, medication, consultant, fees, etc.
 - Clean, animated UI with a **light pink & purple professional theme**
 - Smart dropdowns with "Other" option that allow custom input
