@@ -64,16 +64,6 @@ const firebaseConfig = {
 ```
 ---
 
-## 🎨 Color Palette
-
-Element	Color
-Background	#ffe1ec (Light Pink)
-Headings & Text	#7b2d7d (Purple)
-Buttons	#e75480 (Deeper Pink)
-Input Borders	#ffc2da
-Input Background	#fff0f5
----
-
 ## 📄 License
 
 This project is licensed for personal or clinic use. Contact the author for commercial use.
