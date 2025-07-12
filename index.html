@@ -14,6 +14,9 @@
     <div class="flex-center">
       <button id="showAddForm">Add Patient</button>
       <button id="showSearchForm">Get Patient</button>
+      <button id="showEditForm">Edit Patient</button>
+      <button id="showDeleteForm">Delete Patient</button>
+      <button id="showAllPatients">Show All Patients</button>
     </div>
 
     <div id="formContainer"></div>
@@ -21,9 +24,9 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import {
-      getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs
+      getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
+      collection, query, where, getDocs, orderBy
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -38,18 +41,14 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    // ✅ Protect route: Redirect to login if user is not signed in
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = "login.html";
-      }
-    });
 
     const formContainer = document.getElementById("formContainer");
+
     document.getElementById("showAddForm").addEventListener("click", showAddPatientForm);
     document.getElementById("showSearchForm").addEventListener("click", showSearchPatientForm);
+    document.getElementById("showEditForm").addEventListener("click", showEditPatientForm);
+    document.getElementById("showDeleteForm").addEventListener("click", showDeletePatientForm);
+    document.getElementById("showAllPatients").addEventListener("click", showAllPatients);
 
     function showAddPatientForm() {
       formContainer.innerHTML = `
@@ -201,6 +200,82 @@
           resultBox.innerHTML = `<p class="text-red-600">❌ Error fetching patient data.</p>`;
         }
       });
+    }
+
+    function showEditPatientForm() {
+      formContainer.innerHTML = `
+        <div class="bg-white p-6 rounded shadow">
+          <h2 class="text-xl font-semibold mb-4">Edit Patient</h2>
+          <input id="editPatientId" placeholder="Enter Patient ID to Edit" />
+          <input id="editField" placeholder="Field to Edit (e.g. name, fee)" />
+          <input id="editValue" placeholder="New Value" />
+          <button id="editBtn">Update</button>
+          <p id="editStatus" class="text-sm mt-2"></p>
+        </div>
+      `;
+
+      document.getElementById("editBtn").addEventListener("click", async () => {
+        const id = document.getElementById("editPatientId").value.trim();
+        const field = document.getElementById("editField").value.trim();
+        let value = document.getElementById("editValue").value.trim();
+
+        const status = document.getElementById("editStatus");
+        try {
+          const updateObj = {};
+          value = isNaN(value) ? value : parseFloat(value);
+          updateObj[field] = value;
+
+          await updateDoc(doc(db, "patients", id), updateObj);
+          status.textContent = "✅ Patient updated successfully!";
+          status.className = "text-green-600";
+        } catch (err) {
+          status.textContent = "❌ Failed to update: " + err.message;
+          status.className = "text-red-600";
+        }
+      });
+    }
+
+    function showDeletePatientForm() {
+      formContainer.innerHTML = `
+        <div class="bg-white p-6 rounded shadow">
+          <h2 class="text-xl font-semibold mb-4">Delete Patient</h2>
+          <input id="deleteId" placeholder="Enter Patient ID to Delete" />
+          <button id="deleteBtn">Delete</button>
+          <p id="deleteStatus" class="text-sm mt-2"></p>
+        </div>
+      `;
+
+      document.getElementById("deleteBtn").addEventListener("click", async () => {
+        const id = document.getElementById("deleteId").value.trim();
+        const status = document.getElementById("deleteStatus");
+
+        try {
+          await deleteDoc(doc(db, "patients", id));
+          status.textContent = "✅ Patient deleted successfully!";
+          status.className = "text-green-600";
+        } catch (err) {
+          status.textContent = "❌ Failed to delete: " + err.message;
+          status.className = "text-red-600";
+        }
+      });
+    }
+
+    async function showAllPatients() {
+      formContainer.innerHTML = `<div class="bg-white p-6 rounded shadow"><h2 class="text-xl font-semibold mb-4">All Patients (Sorted by Name)</h2><div id="allPatients"></div></div>`;
+
+      const listDiv = document.getElementById("allPatients");
+      listDiv.innerHTML = "<p>Loading...</p>";
+
+      try {
+        const q = query(collection(db, "patients"), orderBy("name"));
+        const snapshot = await getDocs(q);
+        listDiv.innerHTML = "";
+        snapshot.forEach(doc => {
+          listDiv.innerHTML += formatPatientData(doc.data());
+        });
+      } catch (err) {
+        listDiv.innerHTML = `<p class="text-red-600">❌ Failed to fetch patients.</p>`;
+      }
     }
 
     function formatPatientData(data) {

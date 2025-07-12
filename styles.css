@@ -1,12 +1,12 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f3e8ff; /* Lavender cream background */
+  background-color: #f3e8ff;
   color: #4d2d39;
 }
 
 h1, h2 {
-  color: #6a0dad; /* Deep lavender for headings */
+  color: #6a0dad;
   text-align: center;
 }
 
@@ -16,7 +16,7 @@ h1 {
 }
 
 button {
-  background-color: #b57edc; /* Medium lavender */
+  background-color: #b57edc;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -28,7 +28,7 @@ button {
 }
 
 button:hover {
-  background-color: #c89ce4; /* Lighter lavender hover */
+  background-color: #c89ce4;
   transform: scale(1.03);
 }
 
@@ -39,7 +39,7 @@ input, select, textarea {
   margin-bottom: 1.2rem;
   border: 1px solid #d3bdf0;
   border-radius: 6px;
-  background-color: #f9f5ff; /* Soft cream-lavender input fields */
+  background-color: #f9f5ff;
   color: #4d2d39;
   transition: border-color 0.3s ease;
 }
@@ -54,7 +54,7 @@ input::placeholder, textarea::placeholder {
 }
 
 form, .form-section, .search-box, .result-box {
-  background-color: #f9f5ff; /* Form background in lavender cream */
+  background-color: #f9f5ff;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -92,10 +92,20 @@ form, .form-section, .search-box, .result-box {
 
 .result-box {
   margin-top: 2rem;
+  text-align: left;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .result-box p {
   margin: 0.25rem 0;
+}
+
+.result-box button {
+  margin-right: 0.75rem;
+  margin-top: 0.75rem;
 }
 
 .search-box {
@@ -131,4 +141,77 @@ form, .form-section, .search-box, .result-box {
 
 .text-center {
   text-align: center;
+}
+
+/* Existing styles remain unchanged */
+
+button {
+  background-color: #b57edc;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background-color: #c89ce4;
+  transform: scale(1.03);
+}
+
+/* Add separate classes for action buttons */
+.btn-edit {
+  background-color: #4caf50; /* green */
+}
+
+.btn-edit:hover {
+  background-color: #66bb6a;
+}
+
+.btn-delete {
+  background-color: #e53935; /* red */
+}
+
+.btn-delete:hover {
+  background-color: #ef5350;
+}
+
+.btn-showall {
+  background-color: #5c6bc0; /* indigo */
+}
+
+.btn-showall:hover {
+  background-color: #7986cb;
+}
+
+.btn-update {
+  background-color: #00897b; /* teal */
+}
+
+.btn-update:hover {
+  background-color: #26a69a;
+}
+
+.result-box button {
+  margin-right: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+/* Optional: container for button group in patient cards */
+.button-group {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* Optional: responsive list layout */
+.patient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
