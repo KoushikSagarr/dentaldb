@@ -1,0 +1,117 @@
+/* src/styles/components.css */
+
+button {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background-color: var(--primary-dark-color);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px var(--primary-color), 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Specific styling for the red logout button */
+.logout-btn {
+  background-color: var(--error-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 50px; /* Pill shape */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.logout-btn:hover {
+  background-color: #d32f2f; /* A darker red on hover */
+  transform: scale(1.05);
+  box-shadow: 0 0 10px var(--error-color), 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Navigation button styling */
+.flex-center button {
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.flex-center button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  border-color: var(--primary-color);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 10px var(--primary-color), 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.4rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.25);
+  outline: none;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--secondary-color);
+}
+
+form, .form-section, .search-box, .result-box {
+  background-color: var(--surface-color);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-light);
+  margin-top: 1.5rem;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.text-green-600 {
+  color: var(--success-color);
+  font-weight: 500;
+}
+
+.text-red-600 {
+  color: var(--error-color);
+  font-weight: 500;
+}
+
+.hidden {
+  display: none;
+}
+
+.result-box {
+  border-left: 4px solid var(--primary-color);
+  margin-top: 2rem;
+  text-align: left;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.result-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+}
