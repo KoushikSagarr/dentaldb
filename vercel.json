@@ -1,0 +1,28 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "installCommand": "npm install",
+        "buildCommand": "npm run build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/_vercel/insights",
+      "status": 200,
+      "continue": true
+    },
+    {
+      "src": "/_next/static/(.*)",
+      "headers": { "cache-control": "s-maxage=31536000, immutable" },
+      "continue": true
+    },
+    {
+      "src": "/.*",
+      "dest": "index.html"
+    }
+  ]
+}
